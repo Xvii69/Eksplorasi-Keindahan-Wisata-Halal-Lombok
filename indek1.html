@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lombok Halal Tourism - Panduan Destinasi & Wisata Ramah Muslim di Lombok</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Jakarta Sans & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        emerald: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        },
+                        amber: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .glass-header {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-emerald-500 selection:text-white">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Header & Navigation Bar -->
+    <header class="sticky top-0 z-40 glass-header border-b border-slate-200/80 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('beranda')">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-700 via-emerald-600 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-emerald-600/20">
+                    <i class="fa-solid fa-compass text-xl"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-[10px] font-bold tracking-wider uppercase bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-200">Wisata Ramah Muslim</span>
+                    </div>
+                    <h1 class="text-lg font-extrabold text-slate-900 tracking-tight">Lombok Halal Tourism</h1>
+                </div>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden lg:flex items-center gap-1 bg-slate-100/80 p-1.5 rounded-2xl border border-slate-200">
+                <button onclick="switchTab('beranda')" id="nav-beranda" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 bg-white text-emerald-800 shadow-sm">
+                    <i class="fa-solid fa-house mr-1.5"></i> Beranda
+                </button>
+                <button onclick="switchTab('panduan')" id="nav-panduan" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-slate-900">
+                    <i class="fa-solid fa-book-open mr-1.5"></i> Informasi & Panduan
+                </button>
+                <button onclick="switchTab('katalog')" id="nav-katalog" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-slate-900">
+                    <i class="fa-solid fa-location-dot mr-1.5"></i> Katalog Wisata
+                </button>
+                <button onclick="switchTab('peta')" id="nav-peta" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-slate-900">
+                    <i class="fa-solid fa-map-marked-alt mr-1.5"></i> Peta Pilihan
+                </button>
+            </nav>
+
+            <!-- Mobile Toggle -->
+            <div class="flex items-center gap-3">
+                <button onclick="toggleMobileMenu()" class="lg:hidden p-2.5 rounded-xl text-slate-700 hover:bg-slate-100">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-b border-slate-200 px-4 py-4 space-y-2 shadow-xl">
+            <button onclick="switchTab('beranda'); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-xl font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 flex items-center gap-3">
+                <i class="fa-solid fa-house text-emerald-600 w-5"></i> Beranda
+            </button>
+            <button onclick="switchTab('panduan'); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-xl font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 flex items-center gap-3">
+                <i class="fa-solid fa-book-open text-emerald-600 w-5"></i> Informasi & Panduan
+            </button>
+            <button onclick="switchTab('katalog'); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-xl font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 flex items-center gap-3">
+                <i class="fa-solid fa-location-dot text-emerald-600 w-5"></i> Katalog Wisata Lombok
+            </button>
+            <button onclick="switchTab('peta'); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-xl font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 flex items-center gap-3">
+                <i class="fa-solid fa-map-marked-alt text-emerald-600 w-5"></i> Peta Pilihan Destinasi
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Dynamic Container -->
+    <main class="flex-grow">
+
+        <!-- ================= TAB 1: BERANDA ================= -->
+        <section id="tab-beranda" class="tab-content py-6 sm:py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-900 via-emerald-800 to-slate-900 text-white shadow-2xl p-8 sm:p-12 lg:p-16 mb-12 border border-emerald-700/30">
+                <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fbbf24_1px,transparent_1px)] [background-size:20px_20px]"></div>
+                <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="relative z-10 max-w-3xl">
+                    <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/20 border border-amber-300/30 text-amber-300 text-xs font-bold mb-6 backdrop-blur-md">
+                        <i class="fa-solid fa-award text-amber-400"></i> Portal Resmi Wisata Ramah Muslim • NTB
+                    </span>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-6 leading-tight">
+                        Eksplorasi Keindahan <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-200 to-emerald-300">Wisata Halal Lombok</span>
+                    </h2>
+                    <p class="text-slate-200 text-base sm:text-lg mb-8 leading-relaxed font-light">
+                        Selamat datang di portal Lombok Halal Tourism. Temukan perpaduan sempurna antara panorama alam yang eksotis, warisan sejarah budaya, keberagaman kuliner halal, serta jaminan kenyamanan ibadah untuk liburan Anda.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <button onclick="switchTab('katalog')" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-8 py-4 rounded-2xl shadow-xl shadow-amber-500/20 transition-all flex items-center gap-3">
+                            <i class="fa-solid fa-compass"></i> Jelajahi Destinasi Populer
+                        </button>
+                        <button onclick="switchTab('panduan')" class="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white font-semibold px-6 py-4 rounded-2xl border border-white/20 transition-all flex items-center gap-3">
+                            <i class="fa-solid fa-circle-info text-amber-400"></i> Informasi Layanan Wisata
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Service Highlights -->
+            <div class="mb-16">
+                <div class="text-center max-w-2xl mx-auto mb-10">
+                    <span class="text-emerald-700 font-bold text-xs uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">Kenyamanan Berwisata</span>
+                    <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 mb-3">Layanan Ramah Muslim Terpadu di Lombok</h3>
+                    <p class="text-slate-600 text-sm">Menyajikan standar kenyamanan tinggi bagi wisatawan lokal maupun internasional.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Feature 1 -->
+                    <div onclick="switchTab('panduan')" class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-emerald-500/50 transition-all cursor-pointer group">
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-2xl mb-5 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-mosque"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-slate-900 mb-2">Akses Tempat Ibadah</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed">Ketersediaan sarana ibadah bersih yang mudah dijangkau di setiap titik lokasi tujuan wisata.</p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div onclick="switchTab('panduan')" class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-emerald-500/50 transition-all cursor-pointer group">
+                        <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl mb-5 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-utensils"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-slate-900 mb-2">Jaminan Kuliner Halal</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed">Ragam olahan kuliner khas bersertifikasi halal dengan rasa otentik yang lezat dan aman.</p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div onclick="switchTab('panduan')" class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-emerald-500/50 transition-all cursor-pointer group">
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-2xl mb-5 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-shield-heart"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-slate-900 mb-2">Fasilitas Privasi</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed">Ketersediaan area ruang bilas dan ganti pakaian privat di destinasi bahari dan pantai.</p>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div onclick="switchTab('panduan')" class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-emerald-500/50 transition-all cursor-pointer group">
+                        <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl mb-5 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-landmark text-amber-600"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-slate-900 mb-2">Nilai Sejarah & Budaya</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed">Daya tarik arsitektur bernilai sejarah kebudayaan lokal Sasak dan spiritual yang menawan.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Highlights Grid -->
+            <div>
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h3 class="text-2xl font-extrabold text-slate-900">Destinasi Unggulan Lombok</h3>
+                        <p class="text-slate-600 text-sm">Rekomendasi tempat wisata dan kuliner favorit pilihan wisatawan.</p>
+                    </div>
+                    <button onclick="switchTab('katalog')" class="text-emerald-700 hover:text-emerald-800 font-bold text-sm flex items-center gap-2 group">
+                        Lihat Semua Destinasi <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </div>
+
+                <div id="featured-destinations-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Injected JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: INFORMASI & PANDUAN ================= -->
+        <section id="tab-panduan" class="tab-content hidden py-6 sm:py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="max-w-3xl mx-auto text-center mb-12">
+                <span class="text-emerald-700 font-bold text-xs uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">Panduan Lengkap</span>
+                <h2 class="text-3xl font-extrabold text-slate-900 mt-2 mb-4">Informasi Layanan Wisata Halal Lombok</h2>
+                <p class="text-slate-600 leading-relaxed">Gambaran umum mengenai kesiapan sarana, prasarana, dan ekosistem pariwisata ramah Muslim di Lombok untuk memberikan pengalaman perjalanan yang aman dan berkesan.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <!-- Info Item 1 -->
+                <div class="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl mb-6">
+                            <i class="fa-solid fa-mosque"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">Kenyamanan Pelaksanaan Ibadah</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            Lombok menyediakan ribuan fasilitas tempat ibadah yang tersebar di titik-titik utama perkotaan hingga ke destinasi alam terpencil seperti pesisir pantai Mandalika, kaki Gunung Rinjani, dan kawasan gili. Tempat wudhu dan sarana sholat dijaga kerapihan dan kebersihannya.
+                        </p>
+                    </div>
+                    <div class="bg-emerald-50 p-3.5 rounded-2xl border border-emerald-100 text-xs font-semibold text-emerald-800 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i> Lebih dari 9.000 masjid & mushola aktif di Lombok
+                    </div>
+                </div>
+
+                <!-- Info Item 2 -->
+                <div class="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center text-2xl mb-6">
+                            <i class="fa-solid fa-utensils"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">Keamanan & Sertifikasi Kuliner</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            Sebagai wilayah dengan mayoritas masyarakat Muslim, kehalalan olahan makanan menjadi kebiasaan alami di Lombok. Restoran khas lokal maupun rumah makan modern mendapatkan pengawasan ketat dan sertifikasi dari MUI & Kemenag NTB.
+                        </p>
+                    </div>
+                    <div class="bg-amber-50 p-3.5 rounded-2xl border border-amber-200 text-xs font-semibold text-amber-800 flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halal text-amber-600 text-base"></i> Jaminan bahan baku & pemotongan daging halal
+                    </div>
+                </div>
+
+                <!-- Info Item 3 -->
+                <div class="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl mb-6">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">Privasi & Fasilitas Pembilasan Terpisah</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            Di kawasan tempat wisata air dan pantai, pengelola destinasi menyediakan bilik ganti dan kamar bilas privat yang tertutup rapat, memberikan rasa aman serta menjaga kenyamanan privasi seluruh pengunjung.
+                        </p>
+                    </div>
+                    <div class="bg-emerald-50 p-3.5 rounded-2xl border border-emerald-100 text-xs font-semibold text-emerald-800 flex items-center gap-2">
+                        <i class="fa-solid fa-lock text-emerald-600 text-base"></i> Penataan fasilitas ganti & bilas yang tertutup
+                    </div>
+                </div>
+
+                <!-- Info Item 4 -->
+                <div class="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center text-2xl mb-6">
+                            <i class="fa-solid fa-landmark"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">Kekayaan Seni Arsitektur & Sejarah</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                            Wisatawan dapat menikmati ragam karya arsitektur bersejarah, mulai dari keotentikan bangunan kayu tradisional suku Sasak abad ke-16 hingga kemegetan bangunan tempat ibadah modern berkonsep megah di pusat kota.
+                        </p>
+                    </div>
+                    <div class="bg-amber-50 p-3.5 rounded-2xl border border-amber-200 text-xs font-semibold text-amber-800 flex items-center gap-2">
+                        <i class="fa-solid fa-monument text-amber-600 text-base"></i> Perpaduan harmonis kebudayaan lokal dan spiritual
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: KATALOG WISATA ================= -->
+        <section id="tab-katalog" class="tab-content hidden py-6 sm:py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="max-w-3xl mx-auto text-center mb-10">
+                <span class="text-emerald-700 font-bold text-xs uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">Katalog Destinasi</span>
+                <h2 class="text-3xl font-extrabold text-slate-900 mt-2 mb-4">Pilihan Wisata & Kuliner Lombok</h2>
+                <p class="text-slate-600">Gunakan kolom pencarian atau filter kategori untuk memilih lokasi tujuan wisata Anda.</p>
+            </div>
+
+            <!-- Search & Filter Controls -->
+            <div class="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm mb-8 flex flex-col lg:flex-row gap-4 items-center justify-between">
+                <!-- Search Box -->
+                <div class="relative w-full lg:w-96">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="search-input" oninput="filterDestinations()" placeholder="Cari nama tempat, pantai, atau kuliner..." class="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                </div>
+
+                <!-- Category Filters -->
+                <div class="flex flex-wrap gap-2 w-full lg:w-auto">
+                    <button onclick="setCategoryFilter('all')" id="cat-all" class="cat-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-emerald-700 text-white shadow-sm transition-all">Semua</button>
+                    <button onclick="setCategoryFilter('Wisata Religi & Arsitektur')" id="cat-religi" class="cat-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all">Religi & Arsitektur</button>
+                    <button onclick="setCategoryFilter('Kuliner Halal')" id="cat-kuliner" class="cat-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all">Kuliner Halal</button>
+                    <button onclick="setCategoryFilter('Wisata Alam & Modest')" id="cat-alam" class="cat-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all">Wisata Alam & Budaya</button>
+                </div>
+            </div>
+
+            <!-- Catalog Grid -->
+            <div id="destinations-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- JS Populated -->
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: PETA PILIHAN ================= -->
+        <section id="tab-peta" class="tab-content hidden py-6 sm:py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="max-w-3xl mx-auto text-center mb-10">
+                <span class="text-emerald-700 font-bold text-xs uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">Google Maps Terintegrasi</span>
+                <h2 class="text-3xl font-extrabold text-slate-900 mt-2 mb-4">Peta Lokasi Pariwisata Lombok</h2>
+                <p class="text-slate-600">Gunakan peta interaktif di bawah ini untuk melihat letak geografis dan rute ke berbagai lokasi wisata di Lombok.</p>
+            </div>
+
+            <!-- Google Maps Embed -->
+            <div class="relative bg-slate-200 rounded-3xl overflow-hidden shadow-2xl border border-slate-200 h-[560px] w-full">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1009384.8105556272!2d115.7099710328221!3d-8.650893345265636!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dcdb6b45070f6f9%3A0xc07a82c0b62e4c0!2sLombok!5e0!3m2!1sen!2sid!4v1700000000000!5m2!1sen!2sid" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Detail Pop-up -->
+    <div id="detail-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-100">
+            <div id="modal-content" class="p-6 sm:p-8">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200/80 py-8 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-xl bg-emerald-700 text-white flex items-center justify-center text-xs font-bold">
+                    <i class="fa-solid fa-compass"></i>
+                </div>
+                <div>
+                    <span class="text-sm font-extrabold text-slate-900 block">Lombok Halal Tourism</span>
+                    <span class="text-[11px] text-slate-500">Panduan Destinasi & Wisata Ramah Muslim di Lombok</span>
+                </div>
+            </div>
+            <p class="text-xs text-slate-500">&copy; 2026 Lombok Halal Tourism. Seluruh Hak Cipta Dilindungi.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript App Logic -->
+    <script>
+        // Data Destinasi & Gambar Lokal (folder images/) dengan Fallback Online
+        const destinations = [
+            {
+                id: 0,
+                name: "Islamic Center NTB (Hubbul Wathan)",
+                category: "Wisata Religi & Arsitektur",
+                image: "masjid.jpeg",
+                fallbackImage: "masjid.jpeg",
+                location: "Mataram, Kota Mataram, Lombok",
+                mapQuery: "Islamic+Center+NTB+Mataram",
+                desc: "Ikon wisata religi utama di Lombok dengan 5 menara megah (menara utama setinggi 99 meter melambangkan Asmaul Husna) dan kubah bermotif batik Sasak yang artistik.",
+                details: {
+                    attraction: "Kubah raksasa bermotif batik Sasak, menara tinggi dengan pemandangan lanskap kota Mataram, serta pencahayaan lampu hias indah pada malam hari.",
+                    amenities: "Masjid utama yang sangat luas, tempat wudhu bersih terpisah, ruang penitipan barang, kantin halal, serta perlengkapan sholat lengkap.",
+                    tips: "Pengunjung disarankan berpakaian sopan dan menutup aurat. Tempat ini sangat indah dikunjungi pada sore menjelang malam hari."
+                },
+                rating: "4.9",
+                reviewsCount: "2,840 ulasan"
+            },
+            {
+                id: 1,
+                name: "Masjid Kuno Bayan Beleq",
+                category: "Wisata Religi & Arsitektur",
+                image: "images/masjid-bayan.jpg",
+                fallbackImage: "bayan.jpeg",
+                location: "Bayan, Kabupaten Lombok Utara",
+                mapQuery: "Masjid+Kuno+Bayan+Beleq",
+                desc: "Situs bersejarah bukti penyebaran Islam pertama di Lombok abad ke-16. Berbahan dasar kayu dan bambu dengan atap rumbia yang sangat bernilai spiritual.",
+                details: {
+                    attraction: "Bangunan bersejarah otentik suku Sasak tanpa paku besi yang berdiri anggun di tengah lingkungan asri pedesaan Bayan.",
+                    amenities: "Mushola pendamping modern untuk ibadah harian, area parkir, toilet bersih, serta pemandu lokal masyarakat adat setempat.",
+                    tips: "Hormati aturan adat istiadat warga lokal saat menginjajkan kaki di kawasan situs bersejarah ini."
+                },
+                rating: "4.8",
+                reviewsCount: "1,120 ulasan"
+            },
+            {
+                id: 2,
+                name: "Kawasan Pantai Kuta Mandalika",
+                category: "Wisata Alam & Modest",
+                image: "images/kuta-mandalika.jpg",
+                fallbackImage: "kuta.jpeg",
+                location: "Pujut, Kabupaten Lombok Tengah",
+                mapQuery: "Pantai+Kuta+Mandalika+Lombok",
+                desc: "Pantai berpasir putih merica yang eksotis. Dilengkapi dengan kebersihan terjaga dan infrastruktur penunjang ibadah yang sangat lengkap di pinggir pantai.",
+                details: {
+                    attraction: "Hamparan pasir putih berbentuk buliran unik seperti merica, perbukitan hijau di tepi laut, dan pedestrian pantai yang luas.",
+                    amenities: "Berdekatan dengan Masjid Raya Nurul Bilad Mandalika, kamar mandi & bilik bilas privat tertutup, serta deretan resto halal.",
+                    tips: "Sangat cocok untuk tempat bersantai keluarga di sore hari sambil menikmati pemandangan matahari terbenam."
+                },
+                rating: "4.9",
+                reviewsCount: "3,560 ulasan"
+            },
+            {
+                id: 3,
+                name: "Kuliner Ayam Taliwang",
+                category: "Kuliner Halal",
+                image: "images/ayam-taliwang.jpg",
+                fallbackImage: "ayam.jpeg",
+                location: "Cakranegara, Kota Mataram, Lombok",
+                mapQuery: "Ayam+Taliwang+Mataram+Lombok",
+                desc: "Restoran kuliner legendaris Lombok yang menyajikan Ayam Taliwang asli dengan bumbu pedas meresap dan jaminan 100% kehalalan bahan serta proses pengolahan.",
+                details: {
+                    attraction: "Sajian ayam kampung muda yang dibakar atau digoreng dengan bumbu cabai dan terasi khas Lombok yang gurih pedas menggugah selera.",
+                    amenities: "Fasilitas tempat ibadah mushola bersih keluarga, area wudhu, toilet terpisah, serta tempat makan lesehan luas.",
+                    tips: "Bisa dipesan dengan tingkat kepedasan yang disesuaikan dengan selera Anda. Sangat nikmat disajikan bersama plecing kangkung."
+                },
+                rating: "4.8",
+                reviewsCount: "2,190 ulasan"
+            },
+            {
+                id: 4,
+                name: "Desa Adat Sade Lombok",
+                category: "Wisata Alam & Modest",
+                image: "images/desa-sade.jpg",
+                fallbackImage: "sade.jpeg",
+                location: "Rambitan, Kabupaten Lombok Tengah",
+                mapQuery: "Desa+Adat+Sade+Lombok",
+                desc: "Desa tradisional Suku Sasak yang memelihara adat istiadat dan kearifan lokal yang selaras dengan nilai-nilai keagamaan masyarakat Lombok.",
+                details: {
+                    attraction: "Rumah adat Bale Tani otentik berkontruksi bambu & atap ilalang, pertunjukan tari tradisional, serta kerajinan kain tenun ikat buatan tangan.",
+                    amenities: "Mushola kayu di tengah permukiman, kedai minuman/kopi lokal, toilet publik bersih, dan sentra kerajinan tangan.",
+                    tips: "Anda dapat mencoba belajar menenun langsung bersama para pengrajin wanita di Desa Sade."
+                },
+                rating: "4.7",
+                reviewsCount: "1,830 ulasan"
+            },
+            {
+                id: 5,
+                name: "Sate Rembiga Lombok",
+                category: "Kuliner Halal",
+                image: "images/sate-rembiga.jpg",
+                fallbackImage: "sate.jpeg",
+                location: "Rembiga, Kota Mataram, Lombok",
+                mapQuery: "Sate+Rembiga+Mataram+Lombok",
+                desc: "Kuliner sate sapi khas Lombok dengan cita rasa manis pedas gurih yang meresap hingga ke serat daging, diolah secara halal dan higienis.",
+                details: {
+                    attraction: "Daging sapi empuk yang dimarinasi bumbu rempah ketumbar, gula merah, dan cabai sebelum dibakar di atas arang membara.",
+                    amenities: "Mushola bersih di area rumah makan, tempat cuci tangan, parkir luas, dan sertifikasi jaminan daging halal.",
+                    tips: "Tersedia pula kemasan olahan vakum kedap udara yang tahan lama sebagai oleh-oleh khas Lombok untuk keluarga di rumah."
+                },
+                rating: "4.9",
+                reviewsCount: "2,710 ulasan"
+            }
+        ];
+
+        // Helper untuk handle fallback gambar jika file lokal belum ada
+        function handleImageError(imgElement, fallbackUrl) {
+            imgElement.onerror = null;
+            imgElement.src = fallbackUrl;
+        }
+
+        // Switch Navigation Tabs
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-emerald-800', 'shadow-sm');
+                btn.classList.add('text-slate-600');
+            });
+
+            const activeBtn = document.getElementById('nav-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-600');
+                activeBtn.classList.add('bg-white', 'text-emerald-800', 'shadow-sm');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Toggle Mobile Menu Drawer
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Render Destinations
+        function renderDestinations(data) {
+            const grid = document.getElementById('destinations-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            data.forEach(item => {
+                grid.innerHTML += `
+                    <div class="bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
+                        <div class="relative overflow-hidden h-52 w-full bg-slate-100">
+                            <img src="${item.image}" 
+                                 onerror="handleImageError(this, '${item.fallbackImage}')" 
+                                 alt="${item.name}" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-emerald-900 text-xs font-bold px-3 py-1.5 rounded-xl shadow-md border border-slate-100">
+                                ${item.category}
+                            </span>
+                            <div class="absolute bottom-4 right-4 bg-slate-900/80 backdrop-blur-md text-white text-xs font-semibold px-2.5 py-1 rounded-lg flex items-center gap-1.5">
+                                <i class="fa-solid fa-star text-amber-400"></i> ${item.rating}
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <div class="flex items-center gap-2 text-xs font-medium text-slate-500 mb-2">
+                                <i class="fa-solid fa-location-dot text-emerald-700"></i> ${item.location}
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-2">${item.name}</h3>
+                            <p class="text-slate-600 text-xs mb-6 flex-grow leading-relaxed">${item.desc}</p>
+                            <button onclick="openDetailModal(${item.id})" class="w-full bg-emerald-50 hover:bg-emerald-700 text-emerald-800 hover:text-white font-bold py-3 rounded-xl transition-all text-xs flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-circle-info"></i> Lihat Informasi Lengkap
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Render Featured on Beranda
+        function renderFeatured() {
+            const grid = document.getElementById('featured-destinations-grid');
+            if (!grid) return;
+            const featured = destinations.slice(0, 3);
+            grid.innerHTML = '';
+            featured.forEach(item => {
+                grid.innerHTML += `
+                    <div class="bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
+                        <div class="relative overflow-hidden h-52 w-full bg-slate-100">
+                            <img src="${item.image}" 
+                                 onerror="handleImageError(this, '${item.fallbackImage}')" 
+                                 alt="${item.name}" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-emerald-900 text-xs font-bold px-3 py-1.5 rounded-xl shadow-md">
+                                ${item.category}
+                            </span>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-lg font-bold text-slate-900 mb-2">${item.name}</h3>
+                            <p class="text-slate-600 text-xs mb-4 flex-grow">${item.desc.substring(0, 95)}...</p>
+                            <button onclick="openDetailModal(${item.id})" class="text-emerald-700 font-bold text-xs flex items-center gap-2 hover:text-emerald-800">
+                                Lihat Selengkapnya <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Category Filter Logic
+        function setCategoryFilter(category) {
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('bg-emerald-700', 'text-white', 'shadow-sm');
+                btn.classList.add('bg-slate-100', 'text-slate-600');
+            });
+
+            if (category === 'all') {
+                document.getElementById('cat-all').classList.add('bg-emerald-700', 'text-white', 'shadow-sm');
+                renderDestinations(destinations);
+            } else {
+                if(category === 'Wisata Religi & Arsitektur') document.getElementById('cat-religi').classList.add('bg-emerald-700', 'text-white', 'shadow-sm');
+                if(category === 'Kuliner Halal') document.getElementById('cat-kuliner').classList.add('bg-emerald-700', 'text-white', 'shadow-sm');
+                if(category === 'Wisata Alam & Modest') document.getElementById('cat-alam').classList.add('bg-emerald-700', 'text-white', 'shadow-sm');
+
+                const filtered = destinations.filter(d => d.category === category);
+                renderDestinations(filtered);
+            }
+        }
+
+        // Realtime Search Filter
+        function filterDestinations() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const filtered = destinations.filter(d => 
+                d.name.toLowerCase().includes(query) || 
+                d.desc.toLowerCase().includes(query) ||
+                d.location.toLowerCase().includes(query)
+            );
+            renderDestinations(filtered);
+        }
+
+        // Open Detail Modal Pop-up
+        function openDetailModal(id) {
+            const item = destinations[id];
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full border border-emerald-200">${item.category}</span>
+                    <button onclick="closeDetailModal()" class="text-slate-400 hover:text-slate-600 p-2"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mb-2">${item.name}</h2>
+                <p class="text-slate-500 text-xs mb-6 flex items-center gap-2"><i class="fa-solid fa-location-dot text-emerald-700"></i> ${item.location} • <i class="fa-solid fa-star text-amber-400"></i> ${item.rating} (${item.reviewsCount})</p>
+                
+                <div class="rounded-2xl overflow-hidden mb-6 aspect-[16/9] shadow-md bg-slate-100">
+                    <img src="${item.image}" 
+                         onerror="handleImageError(this, '${item.fallbackImage}')" 
+                         alt="${item.name}" 
+                         class="w-full h-full object-cover">
+                </div>
+
+                <p class="text-slate-700 text-xs leading-relaxed mb-6">${item.desc}</p>
+
+                <div class="space-y-4 mb-6">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <div class="font-bold text-slate-900 text-xs mb-1 flex items-center gap-2 text-emerald-700">
+                            <i class="fa-solid fa-star"></i> Daya Tarik Utama
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">${item.details.attraction}</p>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <div class="font-bold text-slate-900 text-xs mb-1 flex items-center gap-2 text-emerald-700">
+                            <i class="fa-solid fa-concierge-bell"></i> Fasilitas Tersedia
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">${item.details.amenities}</p>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <div class="font-bold text-slate-900 text-xs mb-1 flex items-center gap-2 text-amber-600">
+                            <i class="fa-solid fa-lightbulb"></i> Catatan & Tips Kunjungan
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">${item.details.tips}</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <a href="https://www.google.com/maps/search/?api=1&query=${item.mapQuery}" target="_blank" class="flex-grow bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3.5 rounded-xl shadow-md transition-all text-xs flex items-center justify-center gap-2">
+                        📍 Buka Lokasi di Google Maps
+                    </a>
+                    <button onclick="closeDetailModal()" class="px-5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3.5 rounded-xl transition-all text-xs">
+                        Tutup
+                    </button>
+                </div>
+            `;
+            document.getElementById('detail-modal').classList.remove('hidden');
+            document.getElementById('detail-modal').classList.add('flex');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detail-modal').classList.add('hidden');
+            document.getElementById('detail-modal').classList.remove('flex');
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            renderFeatured();
+            renderDestinations(destinations);
+        }
+    </script>
+</body>
+</html>
